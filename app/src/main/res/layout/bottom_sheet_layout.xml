@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.sp.moneywise.ui.transaction.BottomSheetLayoutBaseObservable" />
+
+        <variable
+            name="clickCallback"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_head"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:background="@{data.background}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/tv_howmuch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/incomeRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/TextAppearance.AppCompat.Large"
+                        android:checked="true"
+                        android:text="Income" />
+
+                    <RadioButton
+                        android:id="@+id/expenseRadioButton"
+                        android:layout_width="wrap_content"
+                        style="@style/TextAppearance.AppCompat.Large"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Expense" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_howmuch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How Much"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@id/editTextAmount"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/editTextAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    style="@style/TextAppearance.AppCompat.Display1"
+                    android:background="@null"
+                    android:hint="Enter amount"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_head"
+                app:layout_constraintBottom_toTopOf="@id/et_category"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <EditText
+                android:id="@+id/et_category"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:hint="title"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_category" />
+
+            <EditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:hint="Description"
+                app:layout_constraintTop_toBottomOf="@+id/et_category" />
+
+            <Button
+                android:id="@+id/signUpBtn"
+                style="@style/FillButton"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_margin="10dp"
+                android:layout_marginVertical="10dp"
+                android:backgroundTint="@color/black"
+                android:onClick="@{(v)->clickCallback.onClick(v)}"
+                android:text="Add"
+                app:layout_constraintTop_toBottomOf="@+id/et_description" />
+
+            <FrameLayout
+                android:id="@id/layout_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/signUpBtn" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>
