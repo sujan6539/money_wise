@@ -12,7 +12,20 @@
           "package_name": "com.sp.moneywise"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "131800992021-ocrt1g8ntompi94asd7fspufhich21qh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sp.moneywise",
+            "certificate_hash": "25c4453f2feb871cc385963bfab321662ef2e413"
+          }
+        },
+        {
+          "client_id": "131800992021-kkt5msv7ur3hmi1spk6a9f8ekeprj9qi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDVIWiroLau87dcazYxl295BUvR44w5CWE"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131800992021-kkt5msv7ur3hmi1spk6a9f8ekeprj9qi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

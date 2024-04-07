@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.sp.moneywise.R
-import com.sp.moneywise.ui.verification.VerificationCallbacks
 import com.sp.moneywise.databinding.FragmentGetOtpBinding
+import com.sp.moneywise.ui.verification.VerificationCallbacks
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,8 +32,8 @@ class GetOTPFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            shouldEnroll = it.getBoolean(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+//            shouldEnroll = it.getBoolean(ARG_PARAM1)
+//            param2 = it.getString(ARG_PARAM2)
         }
         verificationCallbacks = activity as? VerificationCallbacks
     }
