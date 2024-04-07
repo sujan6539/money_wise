@@ -11,7 +11,6 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import com.google.firebase.auth.PhoneMultiFactorAssertion
 import java.util.concurrent.TimeUnit
 
 
@@ -78,7 +77,6 @@ class VerificationViewModel : ViewModel() {
     ) {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                enrollSecondFactor(verificationId, credential.smsCode ?: "", callback)
                 callback.invoke(true, verificationId)
             } else {
                 var message: String? = task.exception?.message
@@ -92,47 +90,6 @@ class VerificationViewModel : ViewModel() {
         }
     }
 
-    private fun enrollSecondFactor(
-        verificationId: String?,
-        otp: String,
-        callback: (Boolean, String?) -> Unit,
-    ) {
-        verificationId?.let {
-            val credential = PhoneAuthProvider.getCredential(verificationId, otp)
-            firebaseAuth.currentUser?.let { user ->
-                user.multiFactor.session
-                    .addOnSuccessListener {
-                        val phoneMultiFactorAssertion =
-                            PhoneMultiFactorAssertion(credential)
-                        user.multiFactor
-                            .enroll(phoneMultiFactorAssertion, "My personal phone number")
-                            .addOnSuccessListener {
-                                callback.invoke(true, null)
-                            }
-                            .addOnFailureListener { e ->
-                                handleError(e, callback)
-                            }
-                    }
-                    .addOnFailureListener { e ->
-                        handleError(e, callback)
-                    }
-            } ?: run {
-                callback.invoke(false, "User not authenticated")
-            }
-        } ?: run {
-            callback.invoke(false, "Verification ID is null")
-        }
-    }
-
-
-    private fun handleError(exception: Exception, callback: (Boolean, String?) -> Unit) {
-        val errorMessage = when (exception) {
-            is FirebaseAuthInvalidCredentialsException -> "Invalid OTP"
-            is FirebaseException -> exception.message
-            else -> "Unknown error occurred"
-        }
-        callback.invoke(false, errorMessage)
-    }
 
     fun reSendOTP(activity: Activity, phoneNumber: String, callback: (Boolean, String?) -> Unit) {
         val options = PhoneAuthOptions.newBuilder()
