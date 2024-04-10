@@ -1,7 +1,6 @@
 package com.sp.moneywise.ui.authentication
 
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -239,11 +238,9 @@ class BaseAuthenticationViewModel : ViewModel() {
             ?.multiFactor
             ?.enroll(multiFactorAssertion, "my phone number")
             ?.addOnCompleteListener {
-                Log.e("HELLO", "onComplete")
                 callback(Result.success(VerificationResultCode.SUCCESS_NO_VERIFICATION_REQUIRED))
                 // ...
             }?.addOnFailureListener {
-                Log.e("HELLO", "onFailure")
                 callback(Result.failure(it))
             }
     }
