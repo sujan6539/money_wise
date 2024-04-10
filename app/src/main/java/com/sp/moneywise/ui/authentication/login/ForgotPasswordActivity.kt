@@ -1,4 +1,4 @@
-package com.sp.moneywise.ui.login
+package com.sp.moneywise.ui.authentication.login
 
 import com.sp.moneywise.ui.BaseActivity
 import android.app.Dialog

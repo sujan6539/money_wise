@@ -19,10 +19,10 @@
             android:exported="false"
             android:label="@string/title_activity_dashboard" />
         <activity
-            android:name=".ui.verification.VerificationActivity"
+            android:name=".ui.authentication.verification.VerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.ForgotPasswordActivity"
+            android:name=".ui.authentication.login.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".ui.brand.BrandActivity"
@@ -35,10 +35,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".ui.authentication.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.RegisterActivity"
+            android:name=".ui.authentication.login.RegisterActivity"
             android:exported="false" />
     </application>
 

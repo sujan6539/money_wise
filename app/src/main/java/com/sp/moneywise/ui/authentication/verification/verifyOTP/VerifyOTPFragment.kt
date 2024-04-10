@@ -1,9 +1,8 @@
-package com.sp.moneywise.ui.verification.verifyOTP
+package com.sp.moneywise.ui.authentication.verification.verifyOTP
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.sp.moneywise.R
-import com.sp.moneywise.ui.verification.VerificationCallbacks
 import com.sp.moneywise.databinding.FragmentVerifyOtpBinding
+import com.sp.moneywise.ui.authentication.verification.VerificationCallbacks
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,12 +81,10 @@ class VerifyOTPFragment : Fragment() {
                     fragmentVerifyOtpBinding.inputCode4.text.toString() +
                     fragmentVerifyOtpBinding.inputCode5.text.toString() +
                     fragmentVerifyOtpBinding.inputCode6.text.toString()
-            Log.e("Hello", verificationId.toString())
-            if (verificationId != null) {
+
                 fragmentVerifyOtpBinding.progressBar.visibility = View.VISIBLE
                 fragmentVerifyOtpBinding.buttonVerify.visibility = View.INVISIBLE
                 verificationCallbacks?.verifyOTP(code)
-            }
         }
         fragmentVerifyOtpBinding.textResendOTP.setOnClickListener {
             phoneNumber?.let { verificationCallbacks?.reRequestOTP(it) } ?: Toast.makeText(
@@ -95,6 +92,17 @@ class VerifyOTPFragment : Fragment() {
                 "Invalid Phone number",
                 Toast.LENGTH_LONG
             ).show()
+        }
+    }
+
+    fun setVisibility(show: Boolean){
+        if(show){
+            fragmentVerifyOtpBinding.progressBar.visibility = View.VISIBLE
+            fragmentVerifyOtpBinding.buttonVerify.visibility = View.INVISIBLE
+        }else{
+            fragmentVerifyOtpBinding.progressBar.visibility = View.INVISIBLE
+            fragmentVerifyOtpBinding.buttonVerify.visibility = View.VISIBLE
+
         }
     }
 
@@ -166,17 +174,14 @@ class VerifyOTPFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment VerifyOTPFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance( phoneNumber: String?) =
             VerifyOTPFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PHONE_NUMBER, param1)
-                    putString(ARG_VERIFICATION_ID, param2)
+                    putString(ARG_PHONE_NUMBER, phoneNumber)
                 }
             }
     }

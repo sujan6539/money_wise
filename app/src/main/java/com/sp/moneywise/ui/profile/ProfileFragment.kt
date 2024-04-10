@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.sp.moneywise.ui.login.LoginActivity
+import com.sp.moneywise.ui.authentication.login.LoginActivity
 import com.sp.moneywise.ui.dashboard.OnLoadingUIUpdate
 import com.sp.moneywise.R
 import com.sp.moneywise.databinding.FragmentProfileBinding

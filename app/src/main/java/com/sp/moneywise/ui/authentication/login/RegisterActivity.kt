@@ -1,28 +1,26 @@
-package com.sp.moneywise.ui.login
+package com.sp.moneywise.ui.authentication.login
 
-import com.sp.moneywise.ui.BaseActivity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
-import androidx.activity.viewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.sp.moneywise.R
 import com.sp.moneywise.isConnected
 import com.sp.moneywise.longToastShow
-import com.sp.moneywise.ui.verification.VerificationActivity
+import com.sp.moneywise.ui.authentication.BaseAuthenticationActivity
+import com.sp.moneywise.ui.authentication.verification.VerificationActivity
 import com.sp.moneywise.validateConPassword
 import com.sp.moneywise.validateEmail
 import com.sp.moneywise.validateName
 import com.sp.moneywise.validatePassword
 
-class RegisterActivity : BaseActivity() {
-
-    private val registerViewModel: RegisterViewModel by viewModels<RegisterViewModel>()
+class RegisterActivity : BaseAuthenticationActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,29 +101,33 @@ class RegisterActivity : BaseActivity() {
             ) {
                 if (isConnected(this)) {
                     loadingDialog.show()
-                    var email  = edEmail.text.toString()
-                    var password =  edPassword.text.toString()
+                    val email = edEmail.text.toString()
+                    val password = edPassword.text.toString()
 
-                    registerViewModel.registerUser(
+                    baseAuthenticationViewModel.registerUser(
                         displayName = edName.text.toString(),
-                        email = edEmail.text.toString(),
-                        password = edPassword.text.toString()
-                    ) { isSuccess, message ->
-                        if (isSuccess) {
-                            longToastShow("Register Successful")
-                            loadingDialog.dismiss()
-                            val mainIntent = VerificationActivity.newIntent(this, email, password, true)
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(mainIntent)
-                            finish()
-                        } else {
-                            loadingDialog.dismiss()
-                            message?.let { it1 -> longToastShow(it1) }
-
+                        email = email,
+                        password = password
+                    ) { result ->
+                        loadingDialog.dismiss()
+                        result.onSuccess {
+                            if (baseAuthenticationViewModel.emailVerified == true) {
+                                val mainIntent =
+                                    VerificationActivity.newIntent(
+                                        this,
+                                        phoneNumber = null
+                                    )
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(mainIntent)
+                                finish()
+                            } else {
+                                longToastShow("Please verify the email.")
+                            }
+                        }.onFailure {
+                            longToastShow("Something went wrong")
+                            Log.e(RegisterActivity::class.java.simpleName, it.toString())
                         }
-
-
                     }
                 } else {
                     longToastShow("No Internet Connection!")

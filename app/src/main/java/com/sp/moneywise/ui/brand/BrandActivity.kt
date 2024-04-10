@@ -8,8 +8,8 @@ import android.os.Looper
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.sp.moneywise.R
-import com.sp.moneywise.ui.verification.VerificationActivity
-import com.sp.moneywise.ui.login.LoginActivity
+import com.sp.moneywise.ui.authentication.verification.VerificationActivity
+import com.sp.moneywise.ui.authentication.login.LoginActivity
 
 class BrandActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
