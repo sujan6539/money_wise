@@ -82,16 +82,11 @@ class LoginActivity : BaseAuthenticationActivity() {
                 && validatePassword(edPassword, edPasswordL)
             ) {
                 if (isConnected(this)) {
-                    loadingDialog?.show()
 
-                    if (baseAuthenticationViewModel.emailVerified == false) {
-                        loadingDialog?.dismiss()
-                        longToastShow("Email not verified")
-                    } else {
-                        val email = edEmail.text.toString()
-                        val password = edPassword.text.toString()
-                        startLoginProcess(email, password)
-                    }
+                    loadingDialog?.dismiss()
+                    val email = edEmail.text.toString()
+                    val password = edPassword.text.toString()
+                    startLoginProcess(email, password)
 
                 } else {
                     longToastShow("No Internet Connection!")
