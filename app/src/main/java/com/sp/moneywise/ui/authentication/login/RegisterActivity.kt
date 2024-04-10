@@ -123,6 +123,7 @@ class RegisterActivity : BaseAuthenticationActivity() {
                                 finish()
                             } else {
                                 longToastShow("Please verify the email.")
+                                finish()
                             }
                         }.onFailure {
                             longToastShow("Something went wrong")
