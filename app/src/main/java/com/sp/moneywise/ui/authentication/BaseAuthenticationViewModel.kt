@@ -216,18 +216,17 @@ class BaseAuthenticationViewModel : ViewModel() {
     }
 
     fun verifyOtp(
+        shouldEnroll: Boolean,
         otp: String,
         callback: (Result<VerificationResultCode>) -> Unit,
     ) {
         val credential = PhoneAuthProvider.getCredential(this.verificationId ?: "", otp)
 
-        signInWithPhoneAuthCredential(credential, callback)
-
-//        if (currentUser?.multiFactor?.enrolledFactors.isNullOrEmpty()) {
-//            enrollToMFA(credential, callback)
-//        } else {
-//            signInWithPhoneAuthCredential(credential, callback)
-//        }
+        if (shouldEnroll) {
+            enrollToMFA(credential, callback)
+        } else {
+            signInWithPhoneAuthCredential(credential, callback)
+        }
     }
 
     private fun enrollToMFA(
@@ -235,9 +234,6 @@ class BaseAuthenticationViewModel : ViewModel() {
         callback: (Result<VerificationResultCode>) -> Unit,
     ) {
         val multiFactorAssertion = PhoneMultiFactorGenerator.getAssertion(credential)
-        if (getPhoneNumber().isNullOrBlank()) {
-            Log.e(BaseAuthenticationViewModel::class.java.simpleName, "Phone number is null")
-        }
         FirebaseAuth.getInstance()
             .currentUser
             ?.multiFactor

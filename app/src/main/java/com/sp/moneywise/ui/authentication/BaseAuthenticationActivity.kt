@@ -1,16 +1,19 @@
 package com.sp.moneywise.ui.authentication
 
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import com.sp.moneywise.ui.BaseActivity
 
 open class BaseAuthenticationActivity : BaseActivity() {
 
-    val baseAuthenticationViewModel: BaseAuthenticationViewModel by viewModels<BaseAuthenticationViewModel>()
+    lateinit var baseAuthenticationViewModel: BaseAuthenticationViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        baseAuthenticationViewModel =
+            ViewModelProvider(this)[BaseAuthenticationViewModel::class.java]
+        Log.e("Hello", baseAuthenticationViewModel.toString())
     }
 }

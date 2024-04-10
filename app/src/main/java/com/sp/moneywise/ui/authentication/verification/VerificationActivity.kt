@@ -20,6 +20,7 @@ import com.sp.moneywise.ui.dashboard.DashboardActivity
 class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks {
     private lateinit var activityVerificationBinding: ActivityVerificationBinding
     private var phoneNumber: String? = null
+    private var shouldEnroll = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,10 @@ class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks
         )
         phoneNumber = intent.getStringExtra(KEY_PHONE_NUMBER)
 
-        if (baseAuthenticationViewModel.verificationId.isNullOrBlank()) {
+        val verificationID = intent.getStringExtra(KEY_VERIFICATION_ID) ?: ""
+        baseAuthenticationViewModel.verificationId = verificationID
+        shouldEnroll = verificationID.isBlank()
+        if (shouldEnroll) {
             setupGetOTPFragment()
         } else {
             setupVerifyFragment()
@@ -65,8 +69,10 @@ class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks
     }
 
     override fun verifyOTP(otp: String) {
-        baseAuthenticationViewModel.verifyOtp(otp) { result ->
-            (supportFragmentManager.findFragmentByTag(VerifyOTPFragment::class.simpleName) as? VerifyOTPFragment)?.setVisibility(false)
+        baseAuthenticationViewModel.verifyOtp(shouldEnroll, otp) { result ->
+            (supportFragmentManager.findFragmentByTag(VerifyOTPFragment::class.simpleName) as? VerifyOTPFragment)?.setVisibility(
+                false
+            )
             result.onSuccess {
                 val intent = Intent(
                     this,
@@ -75,10 +81,10 @@ class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }.onFailure {
-                if(it is FirebaseAuthInvalidCredentialsException){
+                if (it is FirebaseAuthInvalidCredentialsException) {
                     longToastShow("Invalid SMS code")
 
-                }else{
+                } else {
                     Log.e(VerificationActivity::class.java.simpleName, it.toString())
                     val mainIntent = Intent(this, LoginActivity::class.java)
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -110,7 +116,7 @@ class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks
                                 ).commit()
                         }
 
-                         VerificationResultCode.SUCCESS_NO_VERIFICATION_REQUIRED -> {
+                        VerificationResultCode.SUCCESS_NO_VERIFICATION_REQUIRED -> {
                             val intent = Intent(
                                 this,
                                 DashboardActivity::class.java
@@ -152,11 +158,13 @@ class VerificationActivity : BaseAuthenticationActivity(), VerificationCallbacks
     companion object {
 
         private const val KEY_PHONE_NUMBER = "KEY_PHONE_NUMBER"
+        private const val KEY_VERIFICATION_ID = "KEY_VERIFICATION_ID"
 
         @JvmStatic
-        fun newIntent(context: Context, phoneNumber: String?): Intent {
+        fun newIntent(context: Context, verificationID: String, phoneNumber: String?): Intent {
             val i = Intent(context, VerificationActivity::class.java)
-            i.putExtra(KEY_PHONE_NUMBER, phoneNumber?:"")
+            i.putExtra(KEY_PHONE_NUMBER, phoneNumber ?: "")
+            i.putExtra(KEY_VERIFICATION_ID, verificationID)
             return i
 
         }

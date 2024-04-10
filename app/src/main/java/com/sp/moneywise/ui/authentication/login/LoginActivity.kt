@@ -130,6 +130,7 @@ class LoginActivity : BaseAuthenticationActivity() {
                             loadingDialog?.dismiss()
                             val mainIntent = VerificationActivity.newIntent(
                                 this,
+                                verificationID = baseAuthenticationViewModel.verificationId?:"",
                                 baseAuthenticationViewModel.getPhoneNumber()
                             )
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -151,6 +152,7 @@ class LoginActivity : BaseAuthenticationActivity() {
                             val mainIntent =
                                 VerificationActivity.newIntent(
                                     this,
+                                    verificationID = baseAuthenticationViewModel.verificationId?:"",
                                     phoneNumber = null
                                 )
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -167,6 +169,7 @@ class LoginActivity : BaseAuthenticationActivity() {
                         val mainIntent =
                             VerificationActivity.newIntent(
                                 this,
+                                verificationID = baseAuthenticationViewModel.verificationId?:"",
                                 phoneNumber = null
                             )
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

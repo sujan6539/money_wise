@@ -115,6 +115,7 @@ class RegisterActivity : BaseAuthenticationActivity() {
                                 val mainIntent =
                                     VerificationActivity.newIntent(
                                         this,
+                                        verificationID = baseAuthenticationViewModel.verificationId?:"",
                                         phoneNumber = null
                                     )
                                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
